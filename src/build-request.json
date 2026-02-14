@@ -1,178 +1,67 @@
 {
   "kind": "build_request",
-  "title": "Interactive Valentine’s Day single-page experience: “Open At Your Own Risk 💌”",
+  "title": "Fix “No” button so it never disappears and keep message + movement looping until “Yes! 💖”",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create a single-page, mobile-responsive Valentine’s Day experience titled “Open At Your Own Risk 💌” with a romantic theme using dark pink and bright pink as primary colors, centered layout, modern UI, rounded soft/curvy buttons, and smooth cinematic animations (elements should gently scale, fade, and bloom into view with soft easing).",
+      "text": "Update the Opening Screen so the “No” button never disappears and remains visible and clickable indefinitely, continuing to jump to a new random on-screen position (within viewport boundaries) on every click, no matter how many times it is pressed, and only stopping when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "Create a fully functional, interactive Valentine’s Day website titled: “Open At Your Own Risk 💌”",
-          "Main colors: dark pink and bright pink.",
-          "Smooth animations and modern UI.",
-          "Rounded, soft, curvy buttons.",
-          "Mobile responsive and centered layout.",
-          "Make the overall window feel more ambient and immersive, with smooth “opening-up” style animations."
+          "After pressing the “No” button multiple times, it eventually disappears, leaving only the “Yes! 💖” button visible. I do not want that to happen.",
+          "The “No” button never disappears.",
+          "It continues to move randomly within the screen boundaries every time it is clicked.",
+          "It remains visible and clickable at all times.",
+          "It loops infinitely in the same playful way, no matter how many times it is pressed.",
+          "The looping behavior (both button movement and message changes) only stops when the user presses “Yes! 💖”."
         ]
       },
       "acceptanceCriteria": [
-        "App renders as a single-page experience with centered layout and responsive behavior on common mobile and desktop viewport sizes.",
-        "Primary palette clearly uses dark pink + bright pink across background, buttons, and accents.",
-        "Buttons have noticeably rounded/curvy styling and a soft, romantic aesthetic.",
-        "UI elements use smooth, cinematic entrance transitions (scale+fade/bloom feel) rather than abrupt appearance."
+        "On the Opening Screen, repeatedly clicking the “No” button 50+ times never causes it to disappear or become unclickable.",
+        "Each click on “No” results in the button moving to a new random position.",
+        "The new “No” button position is always fully within the visible viewport (with padding) and never renders partially off-screen.",
+        "Viewport changes (resize/orientation change) do not cause the “No” button to end up off-screen; it is re-clamped to a safe visible position.",
+        "Pressing “Yes! 💖” transitions away from the Opening Screen and stops the “No” behavior because the Opening Screen is no longer active.",
+        "All other Opening Screen visuals and behavior remain unchanged (styling, layout, animations, copy)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Implement the Opening Screen UI: show “Abeera” in a large elegant font with two pink heart emojis “💗💗” next to the name; use a soft dark-pink gradient background; apply a subtle fade-in on initial load; display the prompt “Will you be my Valentine? 💖” with a sparkling pink heart effect next to it; render two rounded buttons labeled “Yes! 💖” and “No”; and show the italic quote “Every moment with you feels like a dream come true…” below the buttons.",
+      "text": "Update the changing message under “Will you be my Valentine? 💖” on the Opening Screen so it continues cycling through the existing NO_MESSAGES in an infinite loop while the user remains on the Opening Screen, and ensure this looping stops only when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "Display the name “Abeera” in large, elegant font.",
-          "Place two pink heart emojis (💗💗) next to the name.",
-          "Background should be a soft dark-pink gradient.",
-          "Add a subtle fade-in animation.",
-          "“Will you be my Valentine? 💖” With a sparkling pink heart effect next to it.",
-          "show two rounded buttons: Yes! 💖 / No",
-          "include this romantic quote in smaller italic text: “Every moment with you feels like a dream come true…”"
+          "The changing message under “Will you be my Valentine? 💖” also continues cycling in a loop indefinitely.",
+          "The looping behavior (both button movement and message changes) only stops when the user presses “Yes! 💖”."
         ]
       },
       "acceptanceCriteria": [
-        "On first load, the Opening Screen shows the exact strings: “Abeera”, “💗💗”, “Will you be my Valentine? 💖”, button labels “Yes! 💖” and “No”, and the quote “Every moment with you feels like a dream come true…”.",
-        "Background is a dark-pink gradient and the screen content fades in subtly.",
-        "The prompt includes a visible sparkling pink heart effect adjacent to the prompt line.",
-        "Layout remains centered and readable on mobile (no overflow/cutoff)."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Implement the interactive “No” button behavior: each time the user clicks “No”, reposition the “No” button to a random location within the visible viewport (remaining fully on-screen), making it difficult to click; preserve its rounded pink styling; and cycle the text shown directly below the prompt through the provided message list in order, looping infinitely until the user clicks “Yes! 💖”.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "When the user clicks “No”: The “No” button should: Move to a random position on the screen. Be difficult to click. Keep moving every time it’s clicked.",
-          "Each time the user tries to press “No”, the text below “Will you be my Valentine?” should change to one of these messages in a loop:",
-          "“Wait… are you sure? 🥺” ... “Nope, not happening! 🙅🏻‍♂️”",
-          "This cycle should continue infinitely until the user presses “Yes! 💖”."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Each click on “No” moves the button to a new random position; the button stays fully visible (not clipped off-screen) after moving.",
-        "The “No” button retains rounded edges and pink styling after every move.",
-        "After each “No” click, the message text directly below the prompt updates to the next item in the specified list, and wraps back to the first message after the last.",
-        "Message cycling continues indefinitely until “Yes! 💖” is clicked."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Implement the “Yes! 💖” flow: when “Yes! 💖” is clicked from the Opening Screen, transition by fading the screen to black, display pink animated fireworks during the blackout, then after a short delay transition to the Final Celebration Screen with smooth, magical/cinematic transitions.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "When the user clicks “Yes! 💖”: The screen should fade to black. Pink animated fireworks should appear. After a short delay, transition to a new screen."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Clicking “Yes! 💖” triggers a fade-to-black transition.",
-        "Pink animated fireworks appear during/after the fade-to-black phase.",
-        "After a short delay, the app transitions to the Final Celebration Screen with smooth animation (no abrupt content swap)."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Build the Final Celebration Screen with: light pink background; animated floating heart emojis across the screen; large centered bold text “YAYY! 🎉”; centered text “I knew you’d say yes!” below; a soft glowing text animation; a centered romantic-themed GIF underneath “YAYY! 🎉” that is responsive and gently fades/scales into view; and below the GIF, a centered row of emojis “💕 💖 💗 💘 💝” with a subtle floating/bouncing loop and slight glow effect.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "Background: Light pink.",
-          "Animated floating heart emojis across the screen.",
-          "Large centered bold text: “YAYY! 🎉”",
-          "Below it: “I knew you’d say yes!” Add soft glowing text animation.",
-          "Directly underneath it, centered, add a GIF (romantic-themed).",
-          "Below the GIF, display animated heart emojis in a centered row: 💕 💖 💗 💘 💝",
-          "These hearts should: Have a soft floating or bouncing animation Slight glow effect Loop infinitely"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Final screen background is light pink and shows floating heart emoji animations across the screen.",
-        "The exact text “YAYY! 🎉” is large, centered, and bold.",
-        "The exact text “I knew you’d say yes!” appears below and includes a soft glowing animation.",
-        "A romantic-themed GIF is displayed centered beneath “YAYY! 🎉”, is responsive (scales down on small screens), and animates in via fade/scale.",
-        "The emoji row “💕 💖 💗 💘 💝” is centered beneath the GIF and loops a gentle float/bounce animation with a slight glow."
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Add optional subtle romantic background music on the Final Celebration Screen with user control: provide a clearly visible play/pause control and ensure audio is off by default until the user explicitly starts it.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "Include subtle romantic background music (optional)."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Final screen includes a play/pause control for background music.",
-        "Music does not auto-play; it starts only after an explicit user action.",
-        "Toggling play/pause works reliably across modern browsers."
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Ensure the codebase is clean and well-structured: keep UI logic modular, keep animations/transitions consistent across screens, and avoid external paid libraries. All user-facing text must be in English and must match the specified strings exactly where provided.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "Clean, well-structured code.",
-          "No external paid libraries.",
-          "Use English for any user-facing text in the build request."
-        ]
-      },
-      "acceptanceCriteria": [
-        "No external paid libraries are added as dependencies.",
-        "User-facing strings specified by the user are rendered exactly as written (including punctuation and emojis).",
-        "UI is broken into reasonable components (Opening, Transition/Fireworks, Final) rather than a single monolithic component."
+        "After at least one “No” interaction triggers the alternate messages, the message continues to cycle through NO_MESSAGES and wraps back to the start without stopping while the Opening Screen is displayed.",
+        "The message cycling does not stop after any number of “No” presses.",
+        "When the user presses “Yes! 💖” and the app transitions away from the Opening Screen, message cycling stops (no timers/intervals continue running in the background).",
+        "All user-facing text remains in English and uses the existing strings in constants.ts (no copy changes unless required to enable looping behavior)."
       ]
     }
   ],
   "constraints": [
-    "Frontend must not modify any files under frontend/src/components/ui (compose them instead).",
-    "Frontend must not edit immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx.",
-    "Backend must remain single-actor if any backend work is later added (no multi-canister backend)."
+    "Do not modify immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Keep everything else exactly the same aside from fixing the “No” button persistence/movement and the indefinite message cycling behavior.",
+    "No backend changes are required for this fix."
   ],
   "nonGoals": [
-    "Internet Identity authentication.",
-    "Persistent storage or user accounts.",
-    "Backend APIs (this experience should work as a standalone frontend).",
-    "Real-time features (e.g., WebSockets/chat).",
-    "Third-party paid animation libraries."
+    "Do not add new screens, routes, or backend features.",
+    "Do not change the “Yes! 💖” behavior, transition timing, fireworks, hearts background, or final celebration screen content/layout.",
+    "Do not change the wording of existing messages/buttons aside from implementing the requested looping behavior."
   ],
   "imageRequirements": {
-    "required": [
-      "Romantic-themed animated GIF, soft cute aesthetic, pink-toned (romantic-gif.dim_800x450.gif)"
-    ],
+    "required": [],
     "edits": []
   }
 }

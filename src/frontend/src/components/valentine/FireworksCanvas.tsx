@@ -8,6 +8,7 @@ interface Particle {
   life: number;
   maxLife: number;
   color: string;
+  size: number;
 }
 
 interface Firework {
@@ -17,6 +18,7 @@ interface Firework {
   vy: number;
   exploded: boolean;
   particles: Particle[];
+  burstRing: number; // For the expanding burst ring effect
 }
 
 export default function FireworksCanvas() {
@@ -47,26 +49,29 @@ export default function FireworksCanvas() {
     ];
 
     const createFirework = () => {
-      const x = Math.random() * canvas.width;
-      const targetY = Math.random() * (canvas.height * 0.4) + canvas.height * 0.1;
+      // Better x distribution across the screen
+      const x = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
+      // Varied target heights
+      const targetY = Math.random() * (canvas.height * 0.5) + canvas.height * 0.15;
       
       fireworks.push({
         x,
         y: canvas.height,
         targetY,
-        vy: -8 - Math.random() * 4,
+        vy: -10 - Math.random() * 5,
         exploded: false,
         particles: [],
+        burstRing: 0,
       });
     };
 
     const createParticles = (firework: Firework) => {
-      const particleCount = 50 + Math.floor(Math.random() * 30);
+      const particleCount = 40 + Math.floor(Math.random() * 20); // Reduced for performance
       const color = pinkColors[Math.floor(Math.random() * pinkColors.length)];
 
       for (let i = 0; i < particleCount; i++) {
         const angle = (Math.PI * 2 * i) / particleCount;
-        const velocity = 2 + Math.random() * 3;
+        const velocity = 3 + Math.random() * 4; // Increased velocity for more visible burst
         
         firework.particles.push({
           x: firework.x,
@@ -76,12 +81,13 @@ export default function FireworksCanvas() {
           life: 1,
           maxLife: 1,
           color,
+          size: 2 + Math.random() * 2,
         });
       }
     };
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw fireworks
@@ -91,9 +97,9 @@ export default function FireworksCanvas() {
         if (!firework.exploded) {
           // Move firework up
           firework.y += firework.vy;
-          firework.vy += 0.1; // gravity
+          firework.vy += 0.15; // gravity
 
-          // Draw rocket
+          // Draw rocket trail
           ctx.beginPath();
           ctx.arc(firework.x, firework.y, 3, 0, Math.PI * 2);
           ctx.fillStyle = 'oklch(0.85 0.15 340)';
@@ -105,29 +111,54 @@ export default function FireworksCanvas() {
             createParticles(firework);
           }
         } else {
+          // Draw expanding burst ring for the "pop" effect
+          if (firework.burstRing < 30) {
+            firework.burstRing += 2;
+            const ringOpacity = 1 - (firework.burstRing / 30);
+            
+            ctx.beginPath();
+            ctx.arc(firework.x, firework.y, firework.burstRing, 0, Math.PI * 2);
+            ctx.strokeStyle = `oklch(0.85 0.15 340 / ${ringOpacity})`;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Inner flash
+            ctx.beginPath();
+            ctx.arc(firework.x, firework.y, firework.burstRing * 0.5, 0, Math.PI * 2);
+            ctx.fillStyle = `oklch(0.95 0.10 345 / ${ringOpacity * 0.5})`;
+            ctx.fill();
+          }
+
           // Update and draw particles
           for (let j = firework.particles.length - 1; j >= 0; j--) {
             const particle = firework.particles[j];
 
             particle.x += particle.vx;
             particle.y += particle.vy;
-            particle.vy += 0.05; // gravity
-            particle.life -= 0.01;
+            particle.vy += 0.08; // gravity
+            particle.vx *= 0.99; // air resistance
+            particle.life -= 0.012; // Slightly faster fade
 
             if (particle.life <= 0) {
               firework.particles.splice(j, 1);
               continue;
             }
 
-            // Draw particle
+            // Draw particle with glow
             ctx.beginPath();
-            ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
             ctx.fillStyle = particle.color.replace(')', ` / ${particle.life})`);
+            ctx.fill();
+
+            // Add glow effect
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.size * 2, 0, Math.PI * 2);
+            ctx.fillStyle = particle.color.replace(')', ` / ${particle.life * 0.3})`);
             ctx.fill();
           }
 
-          // Remove firework if all particles are gone
-          if (firework.particles.length === 0) {
+          // Remove firework if all particles are gone and burst is complete
+          if (firework.particles.length === 0 && firework.burstRing >= 30) {
             fireworks.splice(i, 1);
           }
         }
@@ -139,7 +170,7 @@ export default function FireworksCanvas() {
     // Create fireworks periodically
     const fireworkInterval = setInterval(() => {
       createFirework();
-    }, 400);
+    }, 500); // Slightly slower spawn rate
 
     let animationId = requestAnimationFrame(animate);
 

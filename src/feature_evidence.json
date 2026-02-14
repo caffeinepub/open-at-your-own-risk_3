@@ -2,11 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-single-page-mobile-responsive-valentine-s-day-experience-titled-open-at-your-own-risk-with-a-romantic-theme-using-dark-pink-and-bright-pink-as-primary-colors-centered-layout-modern-ui-rounded-soft-curvy-buttons-and-smooth-cinematic-animations-elements-should-gently-scale-fade-and-bloom-into-view-with-soft-easing",
-      "featureTitle": "Create a single-page, mobile-responsive Valentine’s Day experience titled “Open At Your Own Risk 💌” with a romantic theme using dark pink and bright pink as primary colors, centered layout, modern UI, rounded soft/curvy buttons, and smooth cinematic animations (elements should gently scale, fade, and bloom into view with soft easing).",
+      "featureId": "feature-update-the-opening-screen-so-the-no-button-never-disappears-and-remains-visible-and-clickable-indefinitely-continuing-to-jump-to-a-new-random-on-screen-position-within-viewport-boundaries-on-every-click-no-matter-how-many-times-it-is-pressed-and-only-stopping-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
+      "featureTitle": "Update the Opening Screen so the “No” button never disappears and remains visible and clickable indefinitely, continuing to jump to a new random on-screen position (within viewport boundaries) on every click, no matter how many times it is pressed, and only stopping when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/index.css"
+        "frontend/src/components/valentine/NoButton.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -21,10 +20,9 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-the-opening-screen-ui-show-abeera-in-a-large-elegant-font-with-two-pink-heart-emojis-next-to-the-name-use-a-soft-dark-pink-gradient-background-apply-a-subtle-fade-in-on-initial-load-display-the-prompt-will-you-be-my-valentine-with-a-sparkling-pink-heart-effect-next-to-it-render-two-rounded-buttons-labeled-yes-and-no-and-show-the-italic-quote-every-moment-with-you-feels-like-a-dream-come-true-below-the-buttons",
-      "featureTitle": "Implement the Opening Screen UI: show “Abeera” in a large elegant font with two pink heart emojis “💗💗” next to the name; use a soft dark-pink gradient background; apply a subtle fade-in on initial load; display the prompt “Will you be my Valentine? 💖” with a sparkling pink heart effect next to it; render two rounded buttons labeled “Yes! 💖” and “No”; and show the italic quote “Every moment with you feels like a dream come true…” below the buttons.",
+      "featureId": "feature-update-the-changing-message-under-will-you-be-my-valentine-on-the-opening-screen-so-it-continues-cycling-through-the-existing-no-messages-in-an-infinite-loop-while-the-user-remains-on-the-opening-screen-and-ensure-this-looping-stops-only-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
+      "featureTitle": "Update the changing message under “Will you be my Valentine? 💖” on the Opening Screen so it continues cycling through the existing NO_MESSAGES in an infinite loop while the user remains on the Opening Screen, and ensure this looping stops only when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
       "files": [
-        "frontend/src/App.tsx",
         "frontend/src/components/valentine/OpeningScreen.tsx"
       ],
       "components": [
@@ -36,104 +34,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-the-interactive-no-button-behavior-each-time-the-user-clicks-no-reposition-the-no-button-to-a-random-location-within-the-visible-viewport-remaining-fully-on-screen-making-it-difficult-to-click-preserve-its-rounded-pink-styling-and-cycle-the-text-shown-directly-below-the-prompt-through-the-provided-message-list-in-order-looping-infinitely-until-the-user-clicks-yes",
-      "featureTitle": "Implement the interactive “No” button behavior: each time the user clicks “No”, reposition the “No” button to a random location within the visible viewport (remaining fully on-screen), making it difficult to click; preserve its rounded pink styling; and cycle the text shown directly below the prompt through the provided message list in order, looping infinitely until the user clicks “Yes! 💖”.",
-      "files": [
-        "frontend/src/components/valentine/NoButton.tsx",
-        "frontend/src/components/valentine/OpeningScreen.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-the-yes-flow-when-yes-is-clicked-from-the-opening-screen-transition-by-fading-the-screen-to-black-display-pink-animated-fireworks-during-the-blackout-then-after-a-short-delay-transition-to-the-final-celebration-screen-with-smooth-magical-cinematic-transitions",
-      "featureTitle": "Implement the “Yes! 💖” flow: when “Yes! 💖” is clicked from the Opening Screen, transition by fading the screen to black, display pink animated fireworks during the blackout, then after a short delay transition to the Final Celebration Screen with smooth, magical/cinematic transitions.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/valentine/FireworksCanvas.tsx",
-        "frontend/src/components/valentine/YesTransition.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-build-the-final-celebration-screen-with-light-pink-background-animated-floating-heart-emojis-across-the-screen-large-centered-bold-text-yayy-centered-text-i-knew-you-d-say-yes-below-a-soft-glowing-text-animation-a-centered-romantic-themed-gif-underneath-yayy-that-is-responsive-and-gently-fades-scales-into-view-and-below-the-gif-a-centered-row-of-emojis-with-a-subtle-floating-bouncing-loop-and-slight-glow-effect",
-      "featureTitle": "Build the Final Celebration Screen with: light pink background; animated floating heart emojis across the screen; large centered bold text “YAYY! 🎉”; centered text “I knew you’d say yes!” below; a soft glowing text animation; a centered romantic-themed GIF underneath “YAYY! 🎉” that is responsive and gently fades/scales into view; and below the GIF, a centered row of emojis “💕 💖 💗 💘 💝” with a subtle floating/bouncing loop and slight glow effect.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/valentine/FinalCelebrationScreen.tsx",
-        "frontend/src/index.css"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-optional-subtle-romantic-background-music-on-the-final-celebration-screen-with-user-control-provide-a-clearly-visible-play-pause-control-and-ensure-audio-is-off-by-default-until-the-user-explicitly-starts-it",
-      "featureTitle": "Add optional subtle romantic background music on the Final Celebration Screen with user control: provide a clearly visible play/pause control and ensure audio is off by default until the user explicitly starts it.",
-      "files": [
-        "frontend/src/components/valentine/FinalCelebrationScreen.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-6"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-ensure-the-codebase-is-clean-and-well-structured-keep-ui-logic-modular-keep-animations-transitions-consistent-across-screens-and-avoid-external-paid-libraries-all-user-facing-text-must-be-in-english-and-must-match-the-specified-strings-exactly-where-provided",
-      "featureTitle": "Ensure the codebase is clean and well-structured: keep UI logic modular, keep animations/transitions consistent across screens, and avoid external paid libraries. All user-facing text must be in English and must match the specified strings exactly where provided.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/valentine/FinalCelebrationScreen.tsx",
-        "frontend/src/components/valentine/OpeningScreen.tsx",
-        "frontend/src/components/valentine/constants.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-7"
       ],
       "confidence": "high"
     }

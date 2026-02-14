@@ -1,187 +1,41 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Interactive Valentine’s Day single-page experience: Open At Your Own Risk 💌",
+  "title": "Keep “No” button persistent and loop NO_MESSAGES indefinitely on Opening Screen",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Create a single-page, mobile-responsive romantic UI with dark/bright pink palette, centered layout, rounded curvy buttons, and smooth cinematic animations.",
+      "summary": "Ensure the “No” button never disappears, remains always visible/clickable, and keeps jumping to a safe random in-viewport position on every click until the Opening Screen unmounts.",
       "acceptanceCriteria": [
-        "App renders as a single-page experience with centered layout and responsive behavior on common mobile and desktop viewport sizes.",
-        "Primary palette clearly uses dark pink + bright pink across background, buttons, and accents.",
-        "Buttons have noticeably rounded/curvy styling and a soft, romantic aesthetic.",
-        "UI elements use smooth, cinematic entrance transitions (scale+fade/bloom feel) rather than abrupt appearance."
+        "On the Opening Screen, repeatedly clicking the “No” button 50+ times never causes it to disappear or become unclickable.",
+        "Each click on “No” results in the button moving to a new random position.",
+        "The new “No” button position is always fully within the visible viewport (with padding) and never renders partially off-screen.",
+        "Viewport changes (resize/orientation change) do not cause the “No” button to end up off-screen; it is re-clamped to a safe visible position.",
+        "Pressing “Yes! 💖” transitions away from the Opening Screen and stops the “No” behavior because the Opening Screen is no longer active.",
+        "All other Opening Screen visuals and behavior remain unchanged (styling, layout, animations, copy)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/index.css",
-          "operation": "create",
-          "description": "Create global styles (Tailwind base if applicable + custom CSS variables) to establish the dark pink/bright pink palette, ambient gradients, rounded/curvy button base styles, and shared cinematic animations (fade/scale/bloom + soft easing) used across screens."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "create",
-          "description": "Create the single-page React app shell with a centered, mobile-responsive layout and a simple screen state machine (Opening -> Transition -> Final), ensuring smooth shared transitions between screens."
+          "path": "frontend/src/components/valentine/NoButton.tsx",
+          "operation": "modify",
+          "description": "Harden the No button positioning logic so it can loop indefinitely without ever placing the button off-screen: compute safe min/max positions using current button dimensions and the active viewport, generate positions strictly within bounds (with padding), and re-clamp the current position on resize/orientation changes. Ensure the click handler continues to trigger movement on every click and that no state/logic causes the button to stop repositioning or become non-rendered during long interaction sequences."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Implement the Opening Screen UI with required text, gradient background, subtle fade-in, sparkling heart effect, Yes/No buttons, and italic quote.",
+      "summary": "Make the Opening Screen’s alternate message loop through existing NO_MESSAGES infinitely while the Opening Screen is active, stopping cleanly when the screen unmounts after “Yes! 💖”.",
       "acceptanceCriteria": [
-        "On first load, the Opening Screen shows the exact strings: “Abeera”, “💗💗”, “Will you be my Valentine? 💖”, button labels “Yes! 💖” and “No”, and the quote “Every moment with you feels like a dream come true…”.",
-        "Background is a dark-pink gradient and the screen content fades in subtly.",
-        "The prompt includes a visible sparkling pink heart effect adjacent to the prompt line.",
-        "Layout remains centered and readable on mobile (no overflow/cutoff)."
+        "After at least one “No” interaction triggers the alternate messages, the message continues to cycle through NO_MESSAGES and wraps back to the start without stopping while the Opening Screen is displayed.",
+        "The message cycling does not stop after any number of “No” presses.",
+        "When the user presses “Yes! 💖” and the app transitions away from the Opening Screen, message cycling stops (no timers/intervals continue running in the background).",
+        "All user-facing text remains in English and uses the existing strings in constants.ts (no copy changes unless required to enable looping behavior)."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/valentine/OpeningScreen.tsx",
-          "operation": "create",
-          "description": "Create the Opening Screen component rendering the exact required strings, dark-pink gradient background treatment, subtle initial fade-in, prompt line with an adjacent sparkling pink heart effect (CSS animation), two rounded buttons (“Yes! 💖” / “No”), and the italic quote below."
-        },
-        {
-          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Wire the OpeningScreen into the single-page flow as the initial view and pass handlers for “Yes! 💖” and “No” interactions."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Implement “No” button evasive behavior (random on-screen reposition) and looping message cycling below the prompt until “Yes! 💖” is clicked.",
-      "acceptanceCriteria": [
-        "Each click on “No” moves the button to a new random position; the button stays fully visible (not clipped off-screen) after moving.",
-        "The “No” button retains rounded edges and pink styling after every move.",
-        "After each “No” click, the message text directly below the prompt updates to the next item in the specified list, and wraps back to the first message after the last.",
-        "Message cycling continues indefinitely until “Yes! 💖” is clicked."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/valentine/NoButton.tsx",
-          "operation": "create",
-          "description": "Create a dedicated NoButton component that repositions itself to a random location within the visible viewport on each click (constraining position so it remains fully on-screen) while preserving its rounded pink styling."
-        },
-        {
-          "path": "frontend/src/components/valentine/useNoMessageCycle.ts",
-          "operation": "create",
-          "description": "Create a small hook to store and advance the message index on each “No” click, looping infinitely through the provided message list until reset by a “Yes! 💖” action."
-        },
-        {
-          "path": "frontend/src/components/valentine/OpeningScreen.tsx",
-          "operation": "modify",
-          "description": "Integrate NoButton and the message-cycling text directly below the prompt; advance message on each “No” click and ensure cycling continues until “Yes! 💖” is clicked."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Implement the “Yes! 💖” transition: fade to black, show pink animated fireworks during blackout, then transition to Final Celebration Screen with smooth cinematic animation.",
-      "acceptanceCriteria": [
-        "Clicking “Yes! 💖” triggers a fade-to-black transition.",
-        "Pink animated fireworks appear during/after the fade-to-black phase.",
-        "After a short delay, the app transitions to the Final Celebration Screen with smooth animation (no abrupt content swap)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/valentine/YesTransition.tsx",
-          "operation": "create",
-          "description": "Create a full-screen transition overlay component that fades the UI to black and orchestrates timing for the blackout phase and the handoff to the final screen."
-        },
-        {
-          "path": "frontend/src/components/valentine/FireworksCanvas.tsx",
-          "operation": "create",
-          "description": "Create a lightweight, self-contained fireworks animation (e.g., canvas-based particles or DOM-based bursts) tuned for pink fireworks during the blackout phase."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire the “Yes! 💖” action to show the YesTransition overlay, run pink fireworks during blackout, then after a short delay switch to the Final Celebration Screen with a smooth, non-abrupt transition."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Build the Final Celebration Screen with light pink background, floating heart emojis, required texts with glow, responsive romantic GIF with gentle entrance, and animated glowing emoji row.",
-      "acceptanceCriteria": [
-        "Final screen background is light pink and shows floating heart emoji animations across the screen.",
-        "The exact text “YAYY! 🎉” is large, centered, and bold.",
-        "The exact text “I knew you’d say yes!” appears below and includes a soft glowing animation.",
-        "A romantic-themed GIF is displayed centered beneath “YAYY! 🎉”, is responsive (scales down on small screens), and animates in via fade/scale.",
-        "The emoji row “💕 💖 💗 💘 💝” is centered beneath the GIF and loops a gentle float/bounce animation with a slight glow."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/romantic-gif.dim_800x450.gif",
-          "operation": "create",
-          "description": "Add the required generated romantic-themed GIF asset at the exact path frontend/public/assets/generated/romantic-gif.dim_800x450.gif and ensure it is available for static loading in the UI."
-        },
-        {
-          "path": "frontend/src/components/valentine/FinalCelebrationScreen.tsx",
-          "operation": "create",
-          "description": "Create the Final Celebration Screen component with light pink background, floating heart-emoji ambient animation layer, large bold centered “YAYY! 🎉”, centered “I knew you’d say yes!” with soft glowing animation, a responsive GIF using frontend/public/assets/generated/romantic-gif.dim_800x450.gif with gentle fade/scale entrance, and the centered emoji row “💕 💖 💗 💘 💝” with subtle float/bounce loop and slight glow."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Add shared keyframes/classes for floating heart ambience, soft glow text animation, and gentle fade/scale entrances to keep motion consistent and cinematic across the app."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire FinalCelebrationScreen as the destination after the “Yes! 💖” transition so it is reachable and displayed as the final state."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Add optional romantic background music on the Final Celebration Screen with a visible play/pause control; audio off by default until user starts it.",
-      "acceptanceCriteria": [
-        "Final screen includes a play/pause control for background music.",
-        "Music does not auto-play; it starts only after an explicit user action.",
-        "Toggling play/pause works reliably across modern browsers."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/music/romantic.mp3",
-          "operation": "create",
-          "description": "Add a bundled background music file at frontend/public/assets/music/romantic.mp3 (ensure it is a usable, royalty-free/appropriate track)."
-        },
-        {
-          "path": "frontend/src/components/valentine/FinalCelebrationScreen.tsx",
-          "operation": "modify",
-          "description": "Add a clearly visible play/pause control and an audio element referencing frontend/public/assets/music/romantic.mp3; ensure audio is OFF by default and only starts after explicit user interaction; keep state in sync for reliable toggling."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Keep the frontend code clean, modular, consistent in animations, with no external paid libraries; ensure all specified strings match exactly and are in English.",
-      "acceptanceCriteria": [
-        "No external paid libraries are added as dependencies.",
-        "User-facing strings specified by the user are rendered exactly as written (including punctuation and emojis).",
-        "UI is broken into reasonable components (Opening, Transition/Fireworks, Final) rather than a single monolithic component."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/valentine/constants.ts",
-          "operation": "create",
-          "description": "Centralize the exact user-facing strings (titles, prompts, quote, button labels, “No” click message list, and final-screen strings) to ensure they match exactly and remain easy to verify."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Refactor/ensure the app composes modular components (OpeningScreen, YesTransition/Fireworks, FinalCelebrationScreen) and reuses shared animation styling for consistent motion across screens."
-        },
-        {
-          "path": "frontend/src/components/valentine/OpeningScreen.tsx",
-          "operation": "modify",
-          "description": "Update the Opening Screen to source user-facing strings from constants.ts to guarantee exact matches and keep UI logic modular and maintainable."
-        },
-        {
-          "path": "frontend/src/components/valentine/FinalCelebrationScreen.tsx",
-          "operation": "modify",
-          "description": "Update the Final Celebration Screen to source user-facing strings and emoji rows from constants.ts and keep animation usage consistent with shared styles."
+          "description": "Add an infinite looping mechanism for the NO_MESSAGES once the user has clicked “No” at least once: start a timer-driven cycle that advances messageIndex and wraps modulo NO_MESSAGES.length while the Opening Screen remains mounted, and fully clean up timers on unmount and when looping is not active. Keep existing strings from constants.ts and preserve all current visuals/structure (including the initial question + sparkle behavior before any No clicks)."
         }
       ]
     }

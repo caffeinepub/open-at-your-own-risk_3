@@ -1,68 +1,29 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Interactive Valentine’s Day single-page website titled “Open At Your Own Risk 💌” with romantic pink theme, animated UI, playful evasive “No” button, and a celebratory “Yes” flow ending in a final animated screen with GIF and optional music.",
+  "summary": "Interactive Valentine page with animated effects and Yes/No buttons; fix required so the No button and rotating message loop indefinitely until Yes is pressed.",
   "architectural_notes": [
-    "Single-page HTML/CSS/JS implementation with state-based screen transitions (opening -> transition/fireworks -> final celebration).",
-    "All animations/transitions should use smooth easing, scale/fade/bloom effects, and be fully responsive without paid libraries."
+    "No button movement and message cycling must loop indefinitely and only stop when user presses “Yes! 💖”.",
+    "No button must remain visible and clickable at all times; never hide/remove after repeated clicks."
   ],
-  "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Romantic-themed animated GIF, soft cute aesthetic, pink-toned (romantic-gif.dim_800x450.gif)",
+  "known_issues": [
+    "After multiple clicks, the “No” button eventually disappears, leaving only the “Yes! 💖” button visible."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-create-a-single-page-mobile-responsive-valentine-s-day-experience-titled-open-at-your-own-risk-with-a-romantic-theme-using-dark-pink-and-bright-pink-as-primary-colors-centered-layout-modern-ui-rounded-soft-curvy-buttons-and-smooth-cinematic-animations-elements-should-gently-scale-fade-and-bloom-into-view-with-soft-easing",
-      "title": "Create a single-page, mobile-responsive Valentine’s Day experience titled “Open At Your Own Risk 💌” with a romantic theme using dark pink and bright pink as primary colors, centered layout, modern UI, rounded soft/curvy buttons, and smooth cinematic animations (elements should gently scale, fade, and bloom into view with soft easing).",
+      "id": "feature-update-the-opening-screen-so-the-no-button-never-disappears-and-remains-visible-and-clickable-indefinitely-continuing-to-jump-to-a-new-random-on-screen-position-within-viewport-boundaries-on-every-click-no-matter-how-many-times-it-is-pressed-and-only-stopping-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
+      "title": "Update the Opening Screen so the “No” button never disappears and remains visible and clickable indefinitely, continuing to jump to a new random on-screen position (within viewport boundaries) on every click, no matter how many times it is pressed, and only stopping when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-the-opening-screen-ui-show-abeera-in-a-large-elegant-font-with-two-pink-heart-emojis-next-to-the-name-use-a-soft-dark-pink-gradient-background-apply-a-subtle-fade-in-on-initial-load-display-the-prompt-will-you-be-my-valentine-with-a-sparkling-pink-heart-effect-next-to-it-render-two-rounded-buttons-labeled-yes-and-no-and-show-the-italic-quote-every-moment-with-you-feels-like-a-dream-come-true-below-the-buttons",
-      "title": "Implement the Opening Screen UI: show “Abeera” in a large elegant font with two pink heart emojis “💗💗” next to the name; use a soft dark-pink gradient background; apply a subtle fade-in on initial load; display the prompt “Will you be my Valentine? 💖” with a sparkling pink heart effect next to it; render two rounded buttons labeled “Yes! 💖” and “No”; and show the italic quote “Every moment with you feels like a dream come true…” below the buttons.",
+      "id": "feature-update-the-changing-message-under-will-you-be-my-valentine-on-the-opening-screen-so-it-continues-cycling-through-the-existing-no-messages-in-an-infinite-loop-while-the-user-remains-on-the-opening-screen-and-ensure-this-looping-stops-only-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
+      "title": "Update the changing message under “Will you be my Valentine? 💖” on the Opening Screen so it continues cycling through the existing NO_MESSAGES in an infinite loop while the user remains on the Opening Screen, and ensure this looping stops only when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
       "reqIds": [
         "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-the-interactive-no-button-behavior-each-time-the-user-clicks-no-reposition-the-no-button-to-a-random-location-within-the-visible-viewport-remaining-fully-on-screen-making-it-difficult-to-click-preserve-its-rounded-pink-styling-and-cycle-the-text-shown-directly-below-the-prompt-through-the-provided-message-list-in-order-looping-infinitely-until-the-user-clicks-yes",
-      "title": "Implement the interactive “No” button behavior: each time the user clicks “No”, reposition the “No” button to a random location within the visible viewport (remaining fully on-screen), making it difficult to click; preserve its rounded pink styling; and cycle the text shown directly below the prompt through the provided message list in order, looping infinitely until the user clicks “Yes! 💖”.",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-the-yes-flow-when-yes-is-clicked-from-the-opening-screen-transition-by-fading-the-screen-to-black-display-pink-animated-fireworks-during-the-blackout-then-after-a-short-delay-transition-to-the-final-celebration-screen-with-smooth-magical-cinematic-transitions",
-      "title": "Implement the “Yes! 💖” flow: when “Yes! 💖” is clicked from the Opening Screen, transition by fading the screen to black, display pink animated fireworks during the blackout, then after a short delay transition to the Final Celebration Screen with smooth, magical/cinematic transitions.",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-the-final-celebration-screen-with-light-pink-background-animated-floating-heart-emojis-across-the-screen-large-centered-bold-text-yayy-centered-text-i-knew-you-d-say-yes-below-a-soft-glowing-text-animation-a-centered-romantic-themed-gif-underneath-yayy-that-is-responsive-and-gently-fades-scales-into-view-and-below-the-gif-a-centered-row-of-emojis-with-a-subtle-floating-bouncing-loop-and-slight-glow-effect",
-      "title": "Build the Final Celebration Screen with: light pink background; animated floating heart emojis across the screen; large centered bold text “YAYY! 🎉”; centered text “I knew you’d say yes!” below; a soft glowing text animation; a centered romantic-themed GIF underneath “YAYY! 🎉” that is responsive and gently fades/scales into view; and below the GIF, a centered row of emojis “💕 💖 💗 💘 💝” with a subtle floating/bouncing loop and slight glow effect.",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-optional-subtle-romantic-background-music-on-the-final-celebration-screen-with-user-control-provide-a-clearly-visible-play-pause-control-and-ensure-audio-is-off-by-default-until-the-user-explicitly-starts-it",
-      "title": "Add optional subtle romantic background music on the Final Celebration Screen with user control: provide a clearly visible play/pause control and ensure audio is off by default until the user explicitly starts it.",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-ensure-the-codebase-is-clean-and-well-structured-keep-ui-logic-modular-keep-animations-transitions-consistent-across-screens-and-avoid-external-paid-libraries-all-user-facing-text-must-be-in-english-and-must-match-the-specified-strings-exactly-where-provided",
-      "title": "Ensure the codebase is clean and well-structured: keep UI logic modular, keep animations/transitions consistent across screens, and avoid external paid libraries. All user-facing text must be in English and must match the specified strings exactly where provided.",
-      "reqIds": [
-        "REQ-7"
       ],
       "version": 1
     }
@@ -70,25 +31,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Build responsive Valentine’s Day interactive website “Open At Your Own Risk 💌” with themed opening screen (Abeera 💗💗, question prompt, quote) and modern romantic UI/animations",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Implement evasive “No” button that moves randomly and cycles through a looping list of playful messages under the prompt until “Yes” is clicked",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Implement “Yes” flow: fade to black, pink animated fireworks, then transition to final celebration screen with floating hearts, glowing text, centered responsive romantic GIF, animated heart row, and optional background music",
+      "summary": "Fix No button so it never disappears; keep it visible/clickable and moving randomly within screen bounds on every click; keep message cycling indefinitely; stop both loops only when Yes is pressed.",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Open At Your Own Risk 💌",
+  "projectName": "Fix “No” button so it never disappears and keep message + movement looping until “Yes! 💖”",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

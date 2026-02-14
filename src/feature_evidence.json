@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-opening-screen-so-the-no-button-never-disappears-and-remains-visible-and-clickable-indefinitely-continuing-to-jump-to-a-new-random-on-screen-position-within-viewport-boundaries-on-every-click-no-matter-how-many-times-it-is-pressed-and-only-stopping-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
-      "featureTitle": "Update the Opening Screen so the “No” button never disappears and remains visible and clickable indefinitely, continuing to jump to a new random on-screen position (within viewport boundaries) on every click, no matter how many times it is pressed, and only stopping when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
+      "featureId": "feature-fix-the-valentine-opening-screen-no-button-movement-so-the-button-s-rendered-bounding-box-always-remains-completely-within-the-visible-viewport-no-partial-off-screen-placement-accounting-for-the-button-s-current-width-height-and-any-dynamic-viewport-changes-resize-orientation-zoom-mobile-browser-ui-the-button-must-remain-fully-visible-and-clickable-at-all-times-and-every-random-reposition-must-be-strictly-constrained-within-the-viewport-boundaries",
+      "featureTitle": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement), accounting for the button’s current width/height and any dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times, and every random reposition must be strictly constrained within the viewport boundaries.",
       "files": [
         "frontend/src/components/valentine/NoButton.tsx"
       ],
@@ -16,24 +16,6 @@
       ],
       "testIds": [
         "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-update-the-changing-message-under-will-you-be-my-valentine-on-the-opening-screen-so-it-continues-cycling-through-the-existing-no-messages-in-an-infinite-loop-while-the-user-remains-on-the-opening-screen-and-ensure-this-looping-stops-only-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
-      "featureTitle": "Update the changing message under “Will you be my Valentine? 💖” on the Opening Screen so it continues cycling through the existing NO_MESSAGES in an infinite loop while the user remains on the Opening Screen, and ensure this looping stops only when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
-      "files": [
-        "frontend/src/components/valentine/OpeningScreen.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
       ],
       "confidence": "high"
     }

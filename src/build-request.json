@@ -1,64 +1,40 @@
 {
   "kind": "build_request",
-  "title": "Fix “No” button so it never disappears and keep message + movement looping until “Yes! 💖”",
-  "priority": "normal",
+  "title": "Fully constrain “No” button random movement to always stay inside viewport",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Update the Opening Screen so the “No” button never disappears and remains visible and clickable indefinitely, continuing to jump to a new random on-screen position (within viewport boundaries) on every click, no matter how many times it is pressed, and only stopping when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
+      "text": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement), accounting for the button’s current width/height and any dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times, and every random reposition must be strictly constrained within the viewport boundaries.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "recent-messages.user-1"
         ],
         "quotes": [
-          "After pressing the “No” button multiple times, it eventually disappears, leaving only the “Yes! 💖” button visible. I do not want that to happen.",
-          "The “No” button never disappears.",
-          "It continues to move randomly within the screen boundaries every time it is clicked.",
-          "It remains visible and clickable at all times.",
-          "It loops infinitely in the same playful way, no matter how many times it is pressed.",
-          "The looping behavior (both button movement and message changes) only stops when the user presses “Yes! 💖”."
+          "It sometimes moves partially or completely off-screen, making it unclickable.",
+          "The “No” button always stays completely within the visible screen boundaries.",
+          "It never moves outside the viewport (not horizontally or vertically).",
+          "Its random movement is strictly constrained within the screen frame, taking button size into account."
         ]
       },
       "acceptanceCriteria": [
-        "On the Opening Screen, repeatedly clicking the “No” button 50+ times never causes it to disappear or become unclickable.",
-        "Each click on “No” results in the button moving to a new random position.",
-        "The new “No” button position is always fully within the visible viewport (with padding) and never renders partially off-screen.",
-        "Viewport changes (resize/orientation change) do not cause the “No” button to end up off-screen; it is re-clamped to a safe visible position.",
-        "Pressing “Yes! 💖” transitions away from the Opening Screen and stops the “No” behavior because the Opening Screen is no longer active.",
-        "All other Opening Screen visuals and behavior remain unchanged (styling, layout, animations, copy)."
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Update the changing message under “Will you be my Valentine? 💖” on the Opening Screen so it continues cycling through the existing NO_MESSAGES in an infinite loop while the user remains on the Opening Screen, and ensure this looping stops only when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "The changing message under “Will you be my Valentine? 💖” also continues cycling in a loop indefinitely.",
-          "The looping behavior (both button movement and message changes) only stops when the user presses “Yes! 💖”."
-        ]
-      },
-      "acceptanceCriteria": [
-        "After at least one “No” interaction triggers the alternate messages, the message continues to cycle through NO_MESSAGES and wraps back to the start without stopping while the Opening Screen is displayed.",
-        "The message cycling does not stop after any number of “No” presses.",
-        "When the user presses “Yes! 💖” and the app transitions away from the Opening Screen, message cycling stops (no timers/intervals continue running in the background).",
-        "All user-facing text remains in English and uses the existing strings in constants.ts (no copy changes unless required to enable looping behavior)."
+        "After any number of consecutive clicks (e.g., 200+), the “No” button never becomes partially or fully off-screen and is always clickable.",
+        "On window resize and mobile orientation changes, the “No” button is clamped/repositioned as needed so the full button stays within the visible viewport.",
+        "Random positions are generated using safe min/max bounds derived from the current viewport size and the current button dimensions (width/height), ensuring left >= 0+padding, top >= 0+padding, and (left+buttonWidth) <= viewportWidth-padding and (top+buttonHeight) <= viewportHeight-padding.",
+        "The fix does not change any other behavior, styling, text, message cycling, or screen flow."
       ]
     }
   ],
   "constraints": [
-    "Do not modify immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
-    "Keep everything else exactly the same aside from fixing the “No” button persistence/movement and the indefinite message cycling behavior.",
-    "No backend changes are required for this fix."
+    "Do not make any other UI/behavior changes beyond fixing the “No” button off-screen issue.",
+    "Do not edit any files under frontend/src/components/ui or any other frontend immutable paths listed in SYSTEM_CONTEXT.",
+    "Keep the app frontend-only; no backend changes are required for this fix."
   ],
   "nonGoals": [
-    "Do not add new screens, routes, or backend features.",
-    "Do not change the “Yes! 💖” behavior, transition timing, fireworks, hearts background, or final celebration screen content/layout.",
-    "Do not change the wording of existing messages/buttons aside from implementing the requested looping behavior."
+    "Adding new screens, animations, or altering the existing Valentine theme.",
+    "Changing the “Yes” button behavior or message cycling logic.",
+    "Introducing backend state, persistence, or authentication changes."
   ],
   "imageRequirements": {
     "required": [],

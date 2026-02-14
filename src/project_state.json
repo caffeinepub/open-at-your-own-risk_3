@@ -1,29 +1,20 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Interactive Valentine page with animated effects and Yes/No buttons; fix required so the No button and rotating message loop indefinitely until Yes is pressed.",
+  "summary": "New project",
   "architectural_notes": [
-    "No button movement and message cycling must loop indefinitely and only stop when user presses “Yes! 💖”.",
-    "No button must remain visible and clickable at all times; never hide/remove after repeated clicks."
+    "When positioning/moving the “No” button randomly, clamp X/Y coordinates to viewport bounds minus button width/height so the element never renders off-screen."
   ],
   "known_issues": [
-    "After multiple clicks, the “No” button eventually disappears, leaving only the “Yes! 💖” button visible."
+    "“No” button can move partially/completely off-screen, becoming unclickable; movement must be constrained within viewport including button dimensions."
   ],
   "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-update-the-opening-screen-so-the-no-button-never-disappears-and-remains-visible-and-clickable-indefinitely-continuing-to-jump-to-a-new-random-on-screen-position-within-viewport-boundaries-on-every-click-no-matter-how-many-times-it-is-pressed-and-only-stopping-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
-      "title": "Update the Opening Screen so the “No” button never disappears and remains visible and clickable indefinitely, continuing to jump to a new random on-screen position (within viewport boundaries) on every click, no matter how many times it is pressed, and only stopping when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
+      "id": "feature-fix-the-valentine-opening-screen-no-button-movement-so-the-button-s-rendered-bounding-box-always-remains-completely-within-the-visible-viewport-no-partial-off-screen-placement-accounting-for-the-button-s-current-width-height-and-any-dynamic-viewport-changes-resize-orientation-zoom-mobile-browser-ui-the-button-must-remain-fully-visible-and-clickable-at-all-times-and-every-random-reposition-must-be-strictly-constrained-within-the-viewport-boundaries",
+      "title": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement), accounting for the button’s current width/height and any dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times, and every random reposition must be strictly constrained within the viewport boundaries.",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-changing-message-under-will-you-be-my-valentine-on-the-opening-screen-so-it-continues-cycling-through-the-existing-no-messages-in-an-infinite-loop-while-the-user-remains-on-the-opening-screen-and-ensure-this-looping-stops-only-when-the-user-presses-yes-i-e-when-the-opening-screen-unmounts",
-      "title": "Update the changing message under “Will you be my Valentine? 💖” on the Opening Screen so it continues cycling through the existing NO_MESSAGES in an infinite loop while the user remains on the Opening Screen, and ensure this looping stops only when the user presses “Yes! 💖” (i.e., when the Opening Screen unmounts).",
-      "reqIds": [
-        "REQ-2"
       ],
       "version": 1
     }
@@ -31,12 +22,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Fix No button so it never disappears; keep it visible/clickable and moving randomly within screen bounds on every click; keep message cycling indefinitely; stop both loops only when Yes is pressed.",
+      "summary": "Fix: Constrain “No” button random movement so it always remains fully within the visible viewport (account for button size) and stays clickable",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Fix “No” button so it never disappears and keep message + movement looping until “Yes! 💖”",
+  "projectName": "Fully constrain “No” button random movement to always stay inside viewport",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

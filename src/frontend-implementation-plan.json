@@ -1,41 +1,22 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Keep “No” button persistent and loop NO_MESSAGES indefinitely on Opening Screen",
+  "title": "Constrain Valentine “No” button random movement to stay fully within viewport",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Ensure the “No” button never disappears, remains always visible/clickable, and keeps jumping to a safe random in-viewport position on every click until the Opening Screen unmounts.",
+      "summary": "Ensure the Opening Screen “No” button is always positioned fully within the visible viewport by generating random positions from safe bounds derived from current viewport size and current button dimensions, and re-clamping on dynamic viewport changes.",
       "acceptanceCriteria": [
-        "On the Opening Screen, repeatedly clicking the “No” button 50+ times never causes it to disappear or become unclickable.",
-        "Each click on “No” results in the button moving to a new random position.",
-        "The new “No” button position is always fully within the visible viewport (with padding) and never renders partially off-screen.",
-        "Viewport changes (resize/orientation change) do not cause the “No” button to end up off-screen; it is re-clamped to a safe visible position.",
-        "Pressing “Yes! 💖” transitions away from the Opening Screen and stops the “No” behavior because the Opening Screen is no longer active.",
-        "All other Opening Screen visuals and behavior remain unchanged (styling, layout, animations, copy)."
+        "After any number of consecutive clicks (e.g., 200+), the “No” button never becomes partially or fully off-screen and is always clickable.",
+        "On window resize and mobile orientation changes, the “No” button is clamped/repositioned as needed so the full button stays within the visible viewport.",
+        "Random positions are generated using safe min/max bounds derived from the current viewport size and the current button dimensions (width/height), ensuring left >= 0+padding, top >= 0+padding, and (left+buttonWidth) <= viewportWidth-padding and (top+buttonHeight) <= viewportHeight-padding.",
+        "The fix does not change any other behavior, styling, text, message cycling, or screen flow."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/valentine/NoButton.tsx",
           "operation": "modify",
-          "description": "Harden the No button positioning logic so it can loop indefinitely without ever placing the button off-screen: compute safe min/max positions using current button dimensions and the active viewport, generate positions strictly within bounds (with padding), and re-clamp the current position on resize/orientation changes. Ensure the click handler continues to trigger movement on every click and that no state/logic causes the button to stop repositioning or become non-rendered during long interaction sequences."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Make the Opening Screen’s alternate message loop through existing NO_MESSAGES infinitely while the Opening Screen is active, stopping cleanly when the screen unmounts after “Yes! 💖”.",
-      "acceptanceCriteria": [
-        "After at least one “No” interaction triggers the alternate messages, the message continues to cycle through NO_MESSAGES and wraps back to the start without stopping while the Opening Screen is displayed.",
-        "The message cycling does not stop after any number of “No” presses.",
-        "When the user presses “Yes! 💖” and the app transitions away from the Opening Screen, message cycling stops (no timers/intervals continue running in the background).",
-        "All user-facing text remains in English and uses the existing strings in constants.ts (no copy changes unless required to enable looping behavior)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/valentine/OpeningScreen.tsx",
-          "operation": "modify",
-          "description": "Add an infinite looping mechanism for the NO_MESSAGES once the user has clicked “No” at least once: start a timer-driven cycle that advances messageIndex and wraps modulo NO_MESSAGES.length while the Opening Screen remains mounted, and fully clean up timers on unmount and when looping is not active. Keep existing strings from constants.ts and preserve all current visuals/structure (including the initial question + sparkle behavior before any No clicks)."
+          "description": "Update No button positioning logic to strictly constrain the button’s rendered bounding box within the *visible* viewport at all times: (1) compute viewport dimensions using the most reliable available source (prefer `window.visualViewport` where available; otherwise fall back to `document.documentElement.clientWidth/clientHeight` and/or `window.innerWidth/innerHeight`), (2) compute safe min/max bounds using current `getBoundingClientRect()` width/height plus padding, (3) generate random positions only within those bounds and round/normalize to avoid sub-pixel overflow, (4) re-clamp after any reposition and after layout changes by scheduling a post-render clamp (e.g., via `requestAnimationFrame`) so the final rendered box is guaranteed on-screen, and (5) listen to dynamic viewport changes including resize/orientation and visual viewport resize/scroll (for mobile browser UI/zoom changes) to re-clamp the current position without altering any other behavior or styling."
         }
       ]
     }

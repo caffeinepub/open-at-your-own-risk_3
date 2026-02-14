@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T21:00:18.687Z",
+  "generatedAt": "2026-02-14T21:04:52.950Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -12,7 +12,7 @@
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement), accounting for the button’s current width/height and any dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times, and every random reposition must be strictly constrained within the viewport boundaries.",
+        "summary": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement). Random repositioning must be strictly constrained within the viewport boundaries and must properly account for the button’s current width/height and dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times while still moving playfully and randomly within the safe area. Keep everything else unchanged.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/valentine/NoButton.tsx"

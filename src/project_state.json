@@ -3,31 +3,24 @@
   "projectStateVersion": 3,
   "summary": "New project",
   "architectural_notes": [
-    "When positioning/moving the “No” button randomly, clamp X/Y coordinates to viewport bounds minus button width/height so the element never renders off-screen."
+    "Constrain the 'No' button's random movement to a safe viewport area by clamping positions using current viewport dimensions minus the button's rendered width/height, ensuring it remains fully visible/clickable at all times."
   ],
   "known_issues": [
-    "“No” button can move partially/completely off-screen, becoming unclickable; movement must be constrained within viewport including button dimensions."
+    "Bug: 'No' button can move partially/fully off-screen; random positioning does not account for viewport bounds and button dimensions."
   ],
   "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-fix-the-valentine-opening-screen-no-button-movement-so-the-button-s-rendered-bounding-box-always-remains-completely-within-the-visible-viewport-no-partial-off-screen-placement-accounting-for-the-button-s-current-width-height-and-any-dynamic-viewport-changes-resize-orientation-zoom-mobile-browser-ui-the-button-must-remain-fully-visible-and-clickable-at-all-times-and-every-random-reposition-must-be-strictly-constrained-within-the-viewport-boundaries",
-      "title": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement), accounting for the button’s current width/height and any dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times, and every random reposition must be strictly constrained within the viewport boundaries.",
+      "id": "feature-fix-the-valentine-opening-screen-no-button-movement-so-the-button-s-rendered-bounding-box-always-remains-completely-within-the-visible-viewport-no-partial-off-screen-placement-random-repositioning-must-be-strictly-constrained-within-the-viewport-boundaries-and-must-properly-account-for-the-button-s-current-width-height-and-dynamic-viewport-changes-resize-orientation-zoom-mobile-browser-ui-the-button-must-remain-fully-visible-and-clickable-at-all-times-while-still-moving-playfully-and-randomly-within-the-safe-area-keep-everything-else-unchanged",
+      "title": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement). Random repositioning must be strictly constrained within the viewport boundaries and must properly account for the button’s current width/height and dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times while still moving playfully and randomly within the safe area. Keep everything else unchanged.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     }
   ],
-  "new_feature_requests": [
-    {
-      "id": "AR-1",
-      "summary": "Fix: Constrain “No” button random movement so it always remains fully within the visible viewport (account for button size) and stays clickable",
-      "reqIds": [],
-      "status": "pending"
-    }
-  ],
-  "projectName": "Fully constrain “No” button random movement to always stay inside viewport",
+  "new_feature_requests": [],
+  "projectName": "Fix “No” button to stay fully within the visible viewport at all times",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

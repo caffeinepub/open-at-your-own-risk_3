@@ -1,40 +1,40 @@
 {
   "kind": "build_request",
-  "title": "Fully constrain “No” button random movement to always stay inside viewport",
+  "title": "Fix “No” button to stay fully within the visible viewport at all times",
   "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement), accounting for the button’s current width/height and any dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times, and every random reposition must be strictly constrained within the viewport boundaries.",
+      "text": "Fix the Valentine Opening Screen “No” button movement so the button’s rendered bounding box always remains completely within the visible viewport (no partial off-screen placement). Random repositioning must be strictly constrained within the viewport boundaries and must properly account for the button’s current width/height and dynamic viewport changes (resize/orientation/zoom/mobile browser UI). The button must remain fully visible and clickable at all times while still moving playfully and randomly within the safe area. Keep everything else unchanged.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages.user-1"
+          "msg-4"
         ],
         "quotes": [
-          "It sometimes moves partially or completely off-screen, making it unclickable.",
-          "The “No” button always stays completely within the visible screen boundaries.",
-          "It never moves outside the viewport (not horizontally or vertically).",
-          "Its random movement is strictly constrained within the screen frame, taking button size into account."
+          "The “No” button is still going off-screen and outside the visible frame. This issue needs to be properly fixed.",
+          "Stay fully inside the visible viewport at all times.",
+          "Properly account for the button’s width and height when calculating its random position so it cannot overflow the edges.",
+          "Everything else is perfect and should remain unchanged."
         ]
       },
       "acceptanceCriteria": [
-        "After any number of consecutive clicks (e.g., 200+), the “No” button never becomes partially or fully off-screen and is always clickable.",
-        "On window resize and mobile orientation changes, the “No” button is clamped/repositioned as needed so the full button stays within the visible viewport.",
-        "Random positions are generated using safe min/max bounds derived from the current viewport size and the current button dimensions (width/height), ensuring left >= 0+padding, top >= 0+padding, and (left+buttonWidth) <= viewportWidth-padding and (top+buttonHeight) <= viewportHeight-padding.",
-        "The fix does not change any other behavior, styling, text, message cycling, or screen flow."
+        "When the user clicks the “No” button, its new position is always fully visible (no clipping on any edge) and fully clickable.",
+        "Random positions are computed using safe bounds that subtract the button’s current rendered width and height from the available viewport area, with a consistent padding/margin.",
+        "The computation correctly handles mobile/visual viewport scenarios (e.g., browser UI showing/hiding, zoom, orientation changes) so the button never appears partially outside the visible frame.",
+        "On any viewport change events (resize/orientation/visualViewport resize/scroll), the current position is re-clamped so the button remains fully inside the visible viewport without jumping off-screen.",
+        "No other UI behavior, text, styling, or screen flow is changed aside from the “No” button staying within bounds."
       ]
     }
   ],
   "constraints": [
-    "Do not make any other UI/behavior changes beyond fixing the “No” button off-screen issue.",
-    "Do not edit any files under frontend/src/components/ui or any other frontend immutable paths listed in SYSTEM_CONTEXT.",
-    "Keep the app frontend-only; no backend changes are required for this fix."
+    "Frontend immutable paths must not be edited: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Do not change any behavior or styling outside the “No” button viewport-safe positioning fix.",
+    "Keep all user-facing text in English."
   ],
   "nonGoals": [
-    "Adding new screens, animations, or altering the existing Valentine theme.",
-    "Changing the “Yes” button behavior or message cycling logic.",
-    "Introducing backend state, persistence, or authentication changes."
+    "Adding new screens, messages, animations, or changing the Valentine flow.",
+    "Backend changes (Motoko actor logic) or persistence."
   ],
   "imageRequirements": {
     "required": [],

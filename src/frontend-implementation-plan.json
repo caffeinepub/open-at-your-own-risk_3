@@ -1,22 +1,23 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Constrain Valentine “No” button random movement to stay fully within viewport",
+  "title": "Keep the moving “No” button fully within the visible viewport",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Ensure the Opening Screen “No” button is always positioned fully within the visible viewport by generating random positions from safe bounds derived from current viewport size and current button dimensions, and re-clamping on dynamic viewport changes.",
+      "summary": "Constrain the Valentine Opening Screen “No” button so its rendered bounding box always stays fully inside the *visible* viewport (including mobile visualViewport offsets), and re-clamp safely on viewport changes without affecting other UI.",
       "acceptanceCriteria": [
-        "After any number of consecutive clicks (e.g., 200+), the “No” button never becomes partially or fully off-screen and is always clickable.",
-        "On window resize and mobile orientation changes, the “No” button is clamped/repositioned as needed so the full button stays within the visible viewport.",
-        "Random positions are generated using safe min/max bounds derived from the current viewport size and the current button dimensions (width/height), ensuring left >= 0+padding, top >= 0+padding, and (left+buttonWidth) <= viewportWidth-padding and (top+buttonHeight) <= viewportHeight-padding.",
-        "The fix does not change any other behavior, styling, text, message cycling, or screen flow."
+        "When the user clicks the “No” button, its new position is always fully visible (no clipping on any edge) and fully clickable.",
+        "Random positions are computed using safe bounds that subtract the button’s current rendered width and height from the available viewport area, with a consistent padding/margin.",
+        "The computation correctly handles mobile/visual viewport scenarios (e.g., browser UI showing/hiding, zoom, orientation changes) so the button never appears partially outside the visible frame.",
+        "On any viewport change events (resize/orientation/visualViewport resize/scroll), the current position is re-clamped so the button remains fully inside the visible viewport without jumping off-screen.",
+        "No other UI behavior, text, styling, or screen flow is changed aside from the “No” button staying within bounds."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/valentine/NoButton.tsx",
           "operation": "modify",
-          "description": "Update No button positioning logic to strictly constrain the button’s rendered bounding box within the *visible* viewport at all times: (1) compute viewport dimensions using the most reliable available source (prefer `window.visualViewport` where available; otherwise fall back to `document.documentElement.clientWidth/clientHeight` and/or `window.innerWidth/innerHeight`), (2) compute safe min/max bounds using current `getBoundingClientRect()` width/height plus padding, (3) generate random positions only within those bounds and round/normalize to avoid sub-pixel overflow, (4) re-clamp after any reposition and after layout changes by scheduling a post-render clamp (e.g., via `requestAnimationFrame`) so the final rendered box is guaranteed on-screen, and (5) listen to dynamic viewport changes including resize/orientation and visual viewport resize/scroll (for mobile browser UI/zoom changes) to re-clamp the current position without altering any other behavior or styling."
+          "description": "Update the viewport-safe positioning logic to clamp against the *visible* viewport rectangle, not just width/height. Use window.visualViewport when available, including its offsetLeft/offsetTop (and current width/height) so fixed left/top are computed in layout-viewport coordinates that keep the button fully visible during mobile browser UI changes, zoom, and visualViewport scrolling. Ensure random position generation subtracts the button’s measured (getBoundingClientRect) width/height plus a consistent padding, then translate into final fixed coordinates (including visualViewport offsets). Add a robust re-clamp routine used on resize/orientationchange as well as visualViewport resize/scroll; optionally observe button size changes (e.g., ResizeObserver) to re-clamp if the button’s rendered size changes. Keep all other behavior and styling unchanged."
         }
       ]
     }

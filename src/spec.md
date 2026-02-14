@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Ensure the Valentine Opening Screen “No” button always stays fully within the visible viewport so it never becomes partially/fully off-screen and remains clickable.
+**Goal:** Ensure the Valentine Opening Screen “No” button always stays fully within the visible viewport while still moving randomly and playfully.
 
 **Planned changes:**
-- Update the “No” button random reposition logic to compute safe min/max coordinates based on the current viewport size and the button’s rendered width/height (with padding), and clamp every move within those bounds.
-- Recalculate/re-clamp the “No” button position on dynamic viewport changes (resize/orientation/zoom/mobile browser UI changes) to keep the full button visible.
+- Update the “No” button repositioning logic to constrain random positions to viewport-safe bounds that account for the button’s current rendered width/height plus consistent padding.
+- Use visible viewport measurements that handle mobile/visual viewport behavior (browser UI show/hide, zoom, orientation changes) so the button never renders partially off-screen.
+- On viewport change events (resize/orientation/visualViewport changes/scroll), re-clamp the current “No” button position so it remains fully visible and clickable without affecting other UI behavior.
 
-**User-visible outcome:** The “No” button can be clicked repeatedly (even 200+ times) and will always remain fully visible and clickable, including after window resizes or mobile orientation changes.
+**User-visible outcome:** Clicking the “No” button always moves it to a fully visible, fully clickable position within the screen on all device sizes and viewport changes, with no other changes to the Valentine flow or UI.

@@ -1,11 +1,26 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T21:00:18.685Z",
-  "summary": "The diff implements viewport- and button-dimension-aware clamping for the Valentine Opening Screen “No” button in `NoButton.tsx`, using `getBoundingClientRect()` for current button size and `visualViewport`/window fallbacks for viewport size, plus post-render verification and (truncated but indicated) viewport-change handling. No clearly missing REQ-1 items are identifiable from the provided diff summary; no clearly unrequested UI/behavior features are evidenced beyond the intended fix.",
+  "generatedAt": "2026-02-14T21:04:52.948Z",
+  "summary": "REQ-1 appears to be implemented in NoButton.tsx via viewport-aware bounds calculation (including visualViewport offsets), padding, and clamping/random positioning using the button’s measured rendered size. However, two modified non-feature files (frontend-file-summaries.txt and project_state.json) introduce/record unrelated changes not requested in the BuildRequest.",
   "missing_requirements": [],
-  "hallucinated_features": [],
-  "confidence": 0.72,
+  "hallucinated_features": [
+    {
+      "description": "Updated/introduced extensive descriptions of new UI/styling/animation features across many frontend files (e.g., new animations, fireworks changes, music control, gradients), which were not requested and violate the constraint to avoid changing behavior/styling outside the 'No' button positioning fix.",
+      "reason": "BuildRequest explicitly states non-goals: no new screens/messages/animations and no behavior/styling changes outside the viewport-safe positioning fix. The diff includes a modified summary file asserting many unrelated feature changes.",
+      "evidence": [
+        "frontend-file-summaries.txt"
+      ]
+    },
+    {
+      "description": "Modified project metadata/state to add/track a new feature request entry (AR-1) and other project state fields, which were not requested as part of the frontend fix.",
+      "reason": "BuildRequest only asks for the frontend 'No' button viewport-safe positioning fix; updating project tracking metadata is not a requested deliverable.",
+      "evidence": [
+        "project_state.json"
+      ]
+    }
+  ],
+  "confidence": 0.68,
   "changed_files": [
     "frontend-file-summaries.txt",
     "frontend/src/components/valentine/NoButton.tsx",

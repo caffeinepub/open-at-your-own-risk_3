@@ -10,17 +10,21 @@ export default function NoButton({ onClick }: NoButtonProps) {
   const [isPositioned, setIsPositioned] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const getViewportDimensions = useCallback(() => {
-    // Use visualViewport for mobile browsers where available, fallback to window dimensions
+  const getViewportInfo = useCallback(() => {
+    // Use visualViewport for mobile browsers where available
     if (window.visualViewport) {
       return {
         width: window.visualViewport.width,
         height: window.visualViewport.height,
+        offsetLeft: window.visualViewport.offsetLeft,
+        offsetTop: window.visualViewport.offsetTop,
       };
     }
     return {
       width: Math.min(window.innerWidth, document.documentElement.clientWidth),
       height: Math.min(window.innerHeight, document.documentElement.clientHeight),
+      offsetLeft: 0,
+      offsetTop: 0,
     };
   }, []);
 
@@ -32,27 +36,31 @@ export default function NoButton({ onClick }: NoButtonProps) {
     const buttonWidth = buttonRect.width;
     const buttonHeight = buttonRect.height;
 
-    const viewport = getViewportDimensions();
-    const padding = 20;
+    const viewport = getViewportInfo();
+    const padding = 16; // Consistent padding from edges
 
-    // Calculate safe boundaries
-    const minX = padding;
-    const minY = padding;
-    const maxX = Math.max(padding, viewport.width - buttonWidth - padding);
-    const maxY = Math.max(padding, viewport.height - buttonHeight - padding);
+    // Calculate safe boundaries in layout viewport coordinates
+    // For fixed positioning, we need to account for visualViewport offsets
+    const minX = viewport.offsetLeft + padding;
+    const minY = viewport.offsetTop + padding;
+    const maxX = viewport.offsetLeft + viewport.width - buttonWidth - padding;
+    const maxY = viewport.offsetTop + viewport.height - buttonHeight - padding;
+
+    // Ensure maxX and maxY are at least minX and minY
+    const safeMaxX = Math.max(minX, maxX);
+    const safeMaxY = Math.max(minY, maxY);
 
     // Clamp current position to safe boundaries
     setPosition((prev) => {
-      const clampedX = Math.max(minX, Math.min(prev.x, maxX));
-      const clampedY = Math.max(minY, Math.min(prev.y, maxY));
+      const clampedX = Math.max(minX, Math.min(prev.x, safeMaxX));
+      const clampedY = Math.max(minY, Math.min(prev.y, safeMaxY));
       
-      // Round to avoid sub-pixel issues
       return {
         x: Math.round(clampedX),
         y: Math.round(clampedY),
       };
     });
-  }, [getViewportDimensions]);
+  }, [getViewportInfo]);
 
   const moveButton = useCallback(() => {
     if (!buttonRef.current) return;
@@ -62,43 +70,46 @@ export default function NoButton({ onClick }: NoButtonProps) {
     const buttonWidth = buttonRect.width;
     const buttonHeight = buttonRect.height;
 
-    const viewport = getViewportDimensions();
-    const padding = 20;
+    const viewport = getViewportInfo();
+    const padding = 16; // Consistent padding from edges
 
-    // Calculate safe boundaries
-    const minX = padding;
-    const minY = padding;
-    const maxX = Math.max(padding, viewport.width - buttonWidth - padding);
-    const maxY = Math.max(padding, viewport.height - buttonHeight - padding);
+    // Calculate safe boundaries in layout viewport coordinates
+    const minX = viewport.offsetLeft + padding;
+    const minY = viewport.offsetTop + padding;
+    const maxX = viewport.offsetLeft + viewport.width - buttonWidth - padding;
+    const maxY = viewport.offsetTop + viewport.height - buttonHeight - padding;
 
     // Ensure we have valid bounds
-    if (maxX <= minX || maxY <= minY) {
-      // Viewport too small, center the button as best we can
-      const safeX = Math.max(0, Math.min(padding, viewport.width - buttonWidth));
-      const safeY = Math.max(0, Math.min(padding, viewport.height - buttonHeight));
-      setPosition({ x: Math.round(safeX), y: Math.round(safeY) });
+    const safeMaxX = Math.max(minX, maxX);
+    const safeMaxY = Math.max(minY, maxY);
+
+    // If viewport is too small for the button with padding, center it
+    if (safeMaxX <= minX || safeMaxY <= minY) {
+      const centerX = viewport.offsetLeft + Math.max(0, (viewport.width - buttonWidth) / 2);
+      const centerY = viewport.offsetTop + Math.max(0, (viewport.height - buttonHeight) / 2);
+      setPosition({ x: Math.round(centerX), y: Math.round(centerY) });
       setIsPositioned(true);
       return;
     }
 
     // Generate random position strictly within safe boundaries
-    const randomX = minX + Math.random() * (maxX - minX);
-    const randomY = minY + Math.random() * (maxY - minY);
+    const randomX = minX + Math.random() * (safeMaxX - minX);
+    const randomY = minY + Math.random() * (safeMaxY - minY);
 
-    // Clamp and round to ensure integer pixel values
-    const finalX = Math.round(Math.max(minX, Math.min(randomX, maxX)));
-    const finalY = Math.round(Math.max(minY, Math.min(randomY, maxY)));
+    // Round to ensure integer pixel values
+    const finalX = Math.round(randomX);
+    const finalY = Math.round(randomY);
 
     setPosition({ x: finalX, y: finalY });
     setIsPositioned(true);
 
-    // Schedule a post-render clamp to verify the button is actually on-screen
+    // Double-check position after render to ensure button is fully visible
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         clampPositionToViewport();
       });
     });
-  }, [getViewportDimensions, clampPositionToViewport]);
+  }, [getViewportInfo, clampPositionToViewport]);
 
   const handleClick = () => {
     onClick();
@@ -137,6 +148,21 @@ export default function NoButton({ onClick }: NoButtonProps) {
         window.visualViewport.removeEventListener('resize', handleViewportChange);
         window.visualViewport.removeEventListener('scroll', handleViewportChange);
       }
+    };
+  }, [isPositioned, clampPositionToViewport]);
+
+  // Observe button size changes and re-clamp if needed
+  useEffect(() => {
+    if (!buttonRef.current || !isPositioned) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      clampPositionToViewport();
+    });
+
+    resizeObserver.observe(buttonRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
     };
   }, [isPositioned, clampPositionToViewport]);
 

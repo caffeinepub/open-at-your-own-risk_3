@@ -1,0 +1,12 @@
+{
+  "frontend/src/index.css": "Global styles with Valentine's Day pink OKLCH color palette, custom cinematic animations (fade, bloom, sparkle, glow, float, fireworks), romantic gradient backgrounds, and heart effects for smooth magical transitions throughout the app.",
+  "frontend/src/App.tsx": "Main application component managing screen state machine (opening, transition, celebration) and orchestrating the Valentine's Day interactive flow between the three main screens.",
+  "frontend/src/components/valentine/constants.ts": "Centralized constants file containing all exact user-facing strings for the opening screen, \"No\" button messages cycle, and celebration screen to ensure consistency and easy verification.",
+  "frontend/src/components/valentine/OpeningScreen.tsx": "Opening screen component displaying \"Abeera\" with hearts, the Valentine's question with sparkling effect, Yes/No buttons, cycling messages on \"No\" clicks, and the romantic quote on a dark pink gradient background.",
+  "frontend/src/components/valentine/NoButton.tsx": "Interactive \"No\" button component that repositions itself randomly within viewport boundaries on each click while maintaining rounded pink styling and staying fully visible on screen.",
+  "frontend/src/components/valentine/YesTransition.tsx": "Transition overlay component that fades screen to black, triggers pink fireworks animation, and transitions to the final celebration screen after a timed delay.",
+  "frontend/src/components/valentine/FireworksCanvas.tsx": "Canvas-based pink fireworks animation component using particles and physics simulation to create romantic bursting firework effects during the \"Yes\" transition.",
+  "frontend/src/components/valentine/FinalCelebrationScreen.tsx": "Final celebration screen with light pink gradient, floating heart animations, glowing \"YAYY!\" text, responsive romantic GIF, animated emoji row, optional background music control, and footer attribution.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with custom serif font family for elegant typography matching the romantic Valentine's Day aesthetic.",
+  "frontend/src/hooks/useQueries.ts": "Empty placeholder file as no backend queries are needed for this frontend-only interactive experience."
+}

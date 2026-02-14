@@ -1,0 +1,21 @@
+{
+  "backend/main.mo": "Empty Motoko actor with no implemented logic.",
+  "feature_evidence.json": "Lists feature-to-file mappings and metadata for build verification.",
+  "frontend-file-summaries.txt": "Contains prewritten summaries describing each frontend file's purpose.",
+  "frontend/index.css": "Tailwind base styles and theme variables defining light and dark OKLCH color palettes.",
+  "frontend/index.html": "HTML entry point mounting the React app and loading main.tsx.",
+  "frontend/src/App.tsx": "Controls which screen is shown and manages transitions between opening, transition, and celebration views.",
+  "frontend/src/components/valentine/constants.ts": "Defines all opening screen text, No‑message list, and celebration screen strings.",
+  "frontend/src/components/valentine/FinalCelebrationScreen.tsx": "Renders the final celebration UI with floating hearts, GIF, emojis, and optional background music.",
+  "frontend/src/components/valentine/FireworksCanvas.tsx": "Canvas component generating animated pink fireworks using particles and physics.",
+  "frontend/src/components/valentine/NoButton.tsx": "A No button that jumps to random on‑screen positions on click while preserving styling.",
+  "frontend/src/components/valentine/OpeningScreen.tsx": "Opening UI showing the name, question, Yes/No buttons, and cycling No‑response messages.",
+  "frontend/src/components/valentine/YesTransition.tsx": "Fade‑to‑black transition that triggers fireworks before switching to the celebration screen.",
+  "frontend/src/hooks/useActor.ts": "Creates and manages a backend actor using the current Internet Identity, refetching dependent queries when the actor changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides React context and hooks for managing Internet Identity authentication, including login, logout, and identity persistence.",
+  "frontend/src/hooks/useQueries.ts": "Empty placeholder file exporting nothing for this frontend-only project.",
+  "frontend/src/index.css": "Tailwind base styles plus custom Valentine-themed color variables and animation keyframes.",
+  "frontend/src/main.tsx": "Initializes React app with QueryClient and InternetIdentityProvider, then renders the main App component.",
+  "frontend/tailwind.config.js": "Tailwind configuration enabling dark mode, custom colors, fonts, animations, and plugins for typography, container queries, and animations.",
+  "project_state.json": "Project metadata describing the Valentine’s Day web experience, its features, requirements, and current state."
+}

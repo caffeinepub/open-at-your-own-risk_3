@@ -1,0 +1,75 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T20:03:17.846Z",
+  "summary": "The diff implements the overall single-page Valentine flow (Opening → fade-to-black + pink fireworks → Final screen), including responsive layout, pink theme, evasive “No” button, floating hearts, GIF, and optional music control. However, a couple of spec text/title details appear missing or mismatched, and several unrequested/non-goal features were added (Internet Identity/auth scaffolding and a backend canister stub).",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "The experience is titled “Open At Your Own Risk 💌” (as part of the app experience, not just the HTML document title).",
+      "reason": "The browser document title is set, but no UI element in the shown components renders the title text “Open At Your Own Risk 💌”.",
+      "evidence": [
+        "frontend/index.html",
+        "frontend/src/components/valentine/OpeningScreen.tsx",
+        "frontend/src/components/valentine/FinalCelebrationScreen.tsx",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Render the italic quote exactly as written: “Every moment with you feels like a dream come true…”",
+      "reason": "OpeningScreen wraps the quote value in additional double-quote characters, so the user-visible text would not match the exact specified string.",
+      "evidence": [
+        "frontend/src/components/valentine/OpeningScreen.tsx",
+        "frontend/src/components/valentine/constants.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Internet Identity authentication scaffolding/provider and actor hooks included (non-goal).",
+      "reason": "BuildRequest explicitly lists “Internet Identity authentication” as a non-goal, but the diff adds and wires up InternetIdentityProvider/useInternetIdentity and an authenticated/anonymous actor hook.",
+      "evidence": [
+        "frontend/src/main.tsx",
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "Backend canister stub added despite frontend-only requirement/non-goal of backend APIs.",
+      "reason": "The BuildRequest says the experience should work as a standalone frontend and lists backend APIs as a non-goal, but an empty backend actor file was added.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Footer attribution/link added on the Final Celebration Screen.",
+      "reason": "Not requested in any requirement; adds extra user-facing content beyond the specified strings.",
+      "evidence": [
+        "frontend/src/components/valentine/FinalCelebrationScreen.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/valentine/FinalCelebrationScreen.tsx",
+    "frontend/src/components/valentine/FireworksCanvas.tsx",
+    "frontend/src/components/valentine/NoButton.tsx",
+    "frontend/src/components/valentine/OpeningScreen.tsx",
+    "frontend/src/components/valentine/YesTransition.tsx",
+    "frontend/src/components/valentine/constants.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}
